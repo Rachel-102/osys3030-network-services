@@ -1,0 +1,21 @@
+==========================================================
+  OSYS3030 Appliance Health & Verification Suite
+==========================================================
+--- 1. BIND9 DNS Service ---
+  BIND9 service is active                                      [ [0;32mPASS[0m ]
+  BIND9 configuration syntax (named-checkconf)                 [ [0;32mPASS[0m ]
+  DNS listening on UDP port 53                                 [ [0;32mPASS[0m ]
+  Local DNS resolution for innovate.lab                        [ [0;32mPASS[0m ]
+--- 2. Kea DHCPv4 Service ---
+  Kea DHCPv4 service is active                                 [ [0;32mPASS[0m ]
+  Kea configuration syntax (kea-dhcp4 -t)                      [ [0;32mPASS[0m ]
+  DHCP listening on UDP port 67                                [ [0;32mPASS[0m ]
+--- 3. Host Hardening & SSH ---
+  OpenSSH service is active                                    [ [0;32mPASS[0m ]
+  SSH listening on TCP port 2222                               [ [0;32mPASS[0m ]
+--- 4. Firewall & Routing ---
+  UFW firewall is active                                       [ [0;32mPASS[0m ]
+  IPv4 packet forwarding enabled                               [ [0;32mPASS[0m ]
+  iptables NAT MASQUERADE rule present                         [ [0;32mPASS[0m ]
+==========================================================
+  [0;32mAll appliance health checks passed successfully![0m

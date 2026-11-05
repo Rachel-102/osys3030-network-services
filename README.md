@@ -1,99 +1,69 @@
 # OSYS3030 - Linux Network Appliance Documentation
 
-> **Student Name:** [Your Name]  
-> **Student ID / VMID:** [e.g., 106]  
-> **Repository:** [Public GitHub URL]  
-> **Instructor:** Matt Redmond  
-> **Course:** OSYS3030 - Network Services Using Linux  
+**Student:** Rachel Al Awar
+**Server:** rachel
+**Operating System:** Ubuntu Server 26.04.1 LTS
 
----
+## Project Overview
 
-## 1. Appliance Overview
-A high-level summary of your multi-homed Linux server appliance, its purpose, and its role as a gateway/router for the private internal network.
+This project documents my Linux network appliance and its network services. The server provides DNS, DHCP, SSH access, firewall protection, and NAT routing.
 
-* **Operating System:** Ubuntu Server 24.04 LTS (Noble Numbat)
-* **Hostname:** `server-[YourID]` (e.g., `robserver`)
-* **Primary Roles:**
-  * Router & Firewall (UFW + iptables NAT masquerading)
-  * Recursive & Authoritative DNS (BIND9)
-  * Dynamic Host Configuration Protocol (Kea DHCPv4)
-  * Secure Remote Administration (OpenSSH)
+## Network Configuration
 
----
+| Interface | IP Address | Purpose |
+|---|---|---|
+| ens18 | 10.20.0.202/23 | WAN |
+| ens19 | 10.109.0.250/24 | LAN |
 
-## 2. Network Topology & Interfaces
+**LAN subnet:** 10.109.0.0/24
+**Default gateway:** 10.20.0.1
 
-```text
-              +------------------------------------------+
-              |           WAN / NSCC Network             |
-              |             10.20.0.0/23                 |
-              +---------------------+--------------------+
-                                    |
-                                    | (DHCP / Static IP)
-                                 [ens18]
-                       +------------+------------+
-                       |   OSYS3030 Linux Server |
-                       |      (Your Appliance)   |
-                       +------------+------------+
-                                 [ens19]
-                                    | (10.<ID>.0.250/24)
-                                    |
-              +---------------------+--------------------+
-              |        Isolated Private VLAN (vmbr5)      |
-              |             10.<ID>.0.0/24               |
-              +---------------------+--------------------+
-                                    |
-                                    | (DHCP: 10.<ID>.0.10 - .200)
-                                 [eth0]
-                       +------------+------------+
-                       |    Alpine Client VM     |
-                       |       (VM 91<ID>)       |
-                       +-------------------------+
-```
+## Network Topology
 
-| Interface | Network Zone | IP Address / Subnet | Purpose |
-| :--- | :--- | :--- | :--- |
-| `ens18` | WAN / External | `10.20.1.<ID>/23` | Upstream internet & SSH management |
-| `ens19` | LAN / Internal | `10.<ID>.0.250/24` | Default gateway & service binding for clients |
+Internet / Campus Network
+        |
+        |
+ens18 - 10.20.0.202
+        |
+Ubuntu Server (rachel)
+        |
+ens19 - 10.109.0.250
+        |
+LAN - 10.109.0.0/24
+        |
+Alpine Linux Client
 
----
+## Network Services
 
-## 3. Implemented Services
+- SSH: Secure remote administration.
+- BIND9: DNS resolution.
+- Kea DHCPv4: Automatic IP address assignment.
+- UFW: Firewall protection.
+- NAT: Allows private LAN clients to access external networks.
 
-| Directory | Service | Daemon | Listening Ports | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| [`hardening/`](./hardening/) | SSH / Host Security | `sshd` | TCP 22 | Hardened SSH configuration, root restrictions |
-| [`dns/`](./dns/) | BIND9 DNS | `named` | UDP/TCP 53 | Authoritative for `innovate.lab` & recursive forwarder |
-| [`dhcp/`](./dhcp/) | Kea DHCPv4 | `kea-dhcp4` | UDP 67 | Scoped dynamic IP lease allocation for LAN |
-| [`fw/`](./fw/) | UFW Firewall & NAT | `ufw` / `iptables` | N/A | State-tracking firewall & packet masquerading |
-| [`scripts/`](./scripts/) | Automation | Bash | N/A | Automated deployment and verification scripts |
+## Configuration Directories
 
----
+- hardening/: SSH configuration and security documentation.
+- dns/: BIND9 DNS configuration and documentation.
+- dhcp/: Kea DHCP configuration and documentation.
+- fw/: UFW firewall and NAT configuration.
+- scripts/: Automated deployment and verification scripts.
 
-## 4. Base OS & Netplan Prerequisites
-Document any one-time operating system setup steps, package manager configurations, and your `/etc/netplan/*.yaml` static interface definitions required before services can be installed.
+## Verification
 
----
+Check services:
 
-## 5. Automated Recovery & Verification
+sudo systemctl status ssh bind9 kea-dhcp4-server ufw
 
-This appliance includes automated deployment and verification scripts located in [`scripts/`](./scripts/):
+Check networking:
 
-* **Deployment / Disaster Recovery:**
-  ```bash
-  sudo ./scripts/deploy_appliance.sh
-  ```
-* **Automated Health Check & Verification:**
-  ```bash
-  sudo ./scripts/verify_appliance.sh
-  ```
+ip -br addr
+ip route
 
-See [`AI_AUDIT.md`](./AI_AUDIT.md) for documentation on how these scripts were generated using AI and audited for accuracy.
+## Recovery
 
----
+Restore the configuration files from this repository, validate them, and restart the relevant services. Automated deployment and verification scripts are provided in the scripts directory.
 
-## 6. Peer Review Audit
+## Peer Audit
 
-* **Audited Classmate:** [Classmate Name] ([GitHub Profile URL / Repo URL])
-* **Classmate Appliance Subnet:** `10.<PartnerID>.0.0/24`
-* **Audit Summary:** [2–3 sentences summarizing your review of your peer's repository, configs, and recovery documentation].
+To be completed after reviewing a classmate's repository.
