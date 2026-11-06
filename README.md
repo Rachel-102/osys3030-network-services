@@ -67,3 +67,10 @@ Restore the configuration files from this repository, validate them, and restart
 ## Peer Audit
 
 To be completed after reviewing a classmate's repository.
+
+## Peer Audit
+
+**Classmate:** fileman04
+**Repository:** https://github.com/fileman04/osys3030-network-services-template
+
+I reviewed the DNS documentation and compared it with my repository. The guide includes clear configuration and recovery steps, along with commands for checking DNS. The documentation is detailed and useful for restoring the service.
